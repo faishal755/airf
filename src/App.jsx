@@ -1,57 +1,74 @@
-import React, { useContext } from "react";
+import React, { useContext, lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
-import ListingPage1 from "./pages/ListingPage1";
-import ListingPage2 from "./pages/ListingPage2";
-import ListingPage3 from "./pages/ListingPage3";
 import { userDataContext } from "./context/UserContext";
-import MyListing from "./pages/MyListing";
-import ViewCard from "./pages/ViewCard";
-import MyBooking from "./pages/MyBooking";
-import Booked from "./pages/Booked";
+import ChatBot from "./Component/ChatBot/ChatBot";
+
+// Code splitting & dynamic imports (Module 5 performance optimization)
+const Home = lazy(() => import("./pages/Home"));
+const Login = lazy(() => import("./pages/Login"));
+const SignUp = lazy(() => import("./pages/SignUp"));
+const ListingPage1 = lazy(() => import("./pages/ListingPage1"));
+const ListingPage2 = lazy(() => import("./pages/ListingPage2"));
+const ListingPage3 = lazy(() => import("./pages/ListingPage3"));
+const MyListing = lazy(() => import("./pages/MyListing"));
+const ViewCard = lazy(() => import("./pages/ViewCard"));
+const MyBooking = lazy(() => import("./pages/MyBooking"));
+const Booked = lazy(() => import("./pages/Booked"));
+
+// Airbnb-styled loading spinner
+function RouteLoadingFallback() {
+  return (
+    <div className="w-full h-screen flex flex-col items-center justify-center bg-white">
+      <div className="w-12 h-12 border-4 border-rose-100 border-t-[#FF385C] rounded-full animate-spin mb-3" />
+      <p className="text-xs font-semibold text-gray-500 tracking-wider uppercase">Loading Airbnb...</p>
+    </div>
+  );
+}
 
 function App() {
   let { userData } = useContext(userDataContext);
+
   return (
     <div>
-      <ToastContainer />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route
-          path="/ListingPage1"
-          element={userData != null ? <ListingPage1 /> : <Navigate to={"/"} />}
-        />
-        <Route
-          path="/ListingPage2"
-          element={userData != null ? <ListingPage2 /> : <Navigate to={"/"} />}
-        />
-        <Route
-          path="/ListingPage3"
-          element={userData != null ? <ListingPage3 /> : <Navigate to={"/"} />}
-        />
-        <Route
-          path="/MyListing"
-          element={userData != null ? <MyListing /> : <Navigate to={"/"} />}
-        />
-        <Route
-          path="/viewCard"
-          element={userData != null ? <ViewCard /> : <Navigate to={"/"} />}
-        />
-        <Route
-          path="/mybooking"
-          element={userData != null ? <MyBooking /> : <Navigate to={"/"} />}
-        />
-        <Route
-          path="/booked"
-          element={userData != null ? <Booked /> : <Navigate to={"/"} />}
-        />
-      </Routes>
+      <ToastContainer position="top-right" autoClose={3000} />
+      <Suspense fallback={<RouteLoadingFallback />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route
+            path="/ListingPage1"
+            element={userData != null ? <ListingPage1 /> : <Navigate to={"/"} />}
+          />
+          <Route
+            path="/ListingPage2"
+            element={userData != null ? <ListingPage2 /> : <Navigate to={"/"} />}
+          />
+          <Route
+            path="/ListingPage3"
+            element={userData != null ? <ListingPage3 /> : <Navigate to={"/"} />}
+          />
+          <Route
+            path="/MyListing"
+            element={userData != null ? <MyListing /> : <Navigate to={"/"} />}
+          />
+          <Route
+            path="/viewCard"
+            element={userData != null ? <ViewCard /> : <Navigate to={"/"} />}
+          />
+          <Route
+            path="/mybooking"
+            element={userData != null ? <MyBooking /> : <Navigate to={"/"} />}
+          />
+          <Route
+            path="/booked"
+            element={userData != null ? <Booked /> : <Navigate to={"/"} />}
+          />
+        </Routes>
+      </Suspense>
+      <ChatBot />
     </div>
   );
 }

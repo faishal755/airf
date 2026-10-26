@@ -32,7 +32,12 @@ function SignUp() {
         { withCredentials: true },
       );
       setLoading(false);
-      (setUserData(result.data), navigate("/"));
+      setUserData(result.data);
+      localStorage.setItem("userData", JSON.stringify(result.data));
+      if (result.data?.token) {
+        localStorage.setItem("token", result.data.token);
+      }
+      navigate("/");
       toast.success("SignUp succesfull");
       console.log(result);
     } catch (error) {
@@ -121,7 +126,7 @@ function SignUp() {
           type="submit"
           disabled={loading}
         >
-          {loading ? "loading.." : "SignUp"}
+          {loading ? "Signing in.." : "SignUp"}
         </button>
         <p className="text-[18px]">
           Already have a account?
@@ -129,7 +134,7 @@ function SignUp() {
             className="text-[19px] text-[red] cursor-pointer"
             onClick={() => navigate("/login")}
           >
-            Login
+             Login
           </span>
         </p>
       </form>

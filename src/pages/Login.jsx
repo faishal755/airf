@@ -32,6 +32,10 @@ function Login() {
       );
       setLoading(false);
       setUserData(result.data);
+      localStorage.setItem("userData", JSON.stringify(result.data));
+      if (result.data?.token) {
+        localStorage.setItem("token", result.data.token);
+      }
       navigate("/");
       toast.success("Login succesfull");
       console.log(result);
@@ -103,7 +107,7 @@ function Login() {
           className="px-[50px] py-[10px] bg-[#a03535] text-[white] text-[18px] md:px-[100px] rounded-lg"
           disabled={loading}
         >
-          {loading ? "loading..." : "Login"}
+          {loading ? "Logging in..." : "Login"}
         </button>
         <p className="text-[18px]">
           Create new account:
@@ -111,7 +115,7 @@ function Login() {
             className="text-[19px] text-[red] cursor-pointer"
             onClick={() => navigate("/signup")}
           >
-            Login
+            Signup
           </span>
         </p>
       </form>

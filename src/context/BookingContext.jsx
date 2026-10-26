@@ -19,6 +19,15 @@ function BookingContext({ children }) {
   let navigate = useNavigate();
 
   const handleBooking = async (id) => {
+    // Dummy listing check
+    if (String(id).startsWith("dummy_")) {
+      toast.info(
+        "📌 This is a demo listing — real bookings are not available for it.",
+        { autoClose: 4000 }
+      );
+      return;
+    }
+
     setBooking(true);
     try {
       let result = await axios.post(
@@ -41,7 +50,12 @@ function BookingContext({ children }) {
       setBooking(false);
       console.log(error);
       setBookingData([]);
-      toast.error(error.response.data.message);
+      const msg = error?.response?.data?.message || "Booking failed";
+      if (msg.toLowerCase().includes("token")) {
+        toast.error("Please log in to complete your booking");
+      } else {
+        toast.error(msg);
+      }
     }
   };
 

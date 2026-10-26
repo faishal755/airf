@@ -8,3 +8,5 @@ html, body {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+/* Add this to your index.css or App.css */
+@import 'leaflet/dist/leaflet.css';
