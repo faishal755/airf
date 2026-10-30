@@ -4,8 +4,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { userDataContext } from "./context/UserContext";
 import ChatBot from "./Component/ChatBot/ChatBot";
-
-// Code splitting & dynamic imports (Module 5 performance optimization)
+// Pages
 const Home = lazy(() => import("./pages/Home"));
 const Login = lazy(() => import("./pages/Login"));
 const SignUp = lazy(() => import("./pages/SignUp"));

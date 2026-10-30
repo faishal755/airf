@@ -20,10 +20,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
-/**
- * Helper component inside MapContainer to manage view changes,
- * bounds auto-fitting, and Leaflet size invalidation.
- */
+// Component to manage map view and zoom
 function MapController({ bounds, center, zoom, searchOnMove, onMapMoved }) {
   const map = useMap();
   const hasInitialized = useRef(false);

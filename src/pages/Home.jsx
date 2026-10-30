@@ -36,42 +36,44 @@ function Home() {
 
       {/* LIST VIEW */}
       {viewMode === "list" && (
-        <div className="flex flex-col min-h-screen justify-between">
-          <div
-            className="w-[100vw] min-h-[77vh] flex items-start
-         justify-center gap-[25px] flex-wrap mt-[225px] md:mt-[170px] pb-[90px]"
-          >
+        <div className="flex flex-col min-h-screen justify-between w-full">
+          <main className="w-full max-w-[1780px] mx-auto px-4 sm:px-6 md:px-10 lg:px-12 mt-[210px] md:mt-[165px] pb-24 md:pb-28 flex-1">
             {newListData && newListData.length > 0 ? (
-              newListData.map((list) => (
-                <Card
-                  key={list._id}
-                  title={list.title}
-                  landmark={list.landmark}
-                  city={list.city}
-                  image1={list.image1}
-                  image2={list.image2}
-                  image3={list.image3}
-                  rent={list.rent}
-                  id={list._id}
-                  rating={list.rating}
-                  isBooked={list.isBooked}
-                  host={list.host}
-                />
-              ))
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-10">
+                {newListData.map((list) => (
+                  <Card
+                    key={list._id}
+                    title={list.title}
+                    landmark={list.landmark}
+                    city={list.city}
+                    image1={list.image1}
+                    image2={list.image2}
+                    image3={list.image3}
+                    rent={list.rent}
+                    id={list._id}
+                    rating={list.rating}
+                    isBooked={list.isBooked}
+                    host={list.host}
+                  />
+                ))}
+              </div>
             ) : (
-              <div className="flex flex-col items-center justify-center mt-20 text-gray-500">
-                <p className="text-xl font-semibold">No listings found</p>
-                <p className="text-sm">Try selecting another category or location</p>
+              <div className="flex flex-col items-center justify-center py-20 text-gray-500">
+                <p className="text-xl font-semibold text-gray-800">No listings found</p>
+                <p className="text-sm text-gray-500 mt-1">Try selecting another category or location</p>
               </div>
             )}
-          </div>
+
+            {/* Generous breathing space after the rooms listings before the footer */}
+            <div className="h-12 sm:h-16 w-full" aria-hidden="true" />
+          </main>
           <Footer />
         </div>
       )}
 
       {/* MAP VIEW */}
       {viewMode === "map" && (
-        <div className="w-full h-[calc(100vh-225px)] md:h-[calc(100vh-170px)] mt-[225px] md:mt-[170px] relative">
+        <div className="w-full h-[calc(100vh-210px)] md:h-[calc(100vh-165px)] mt-[210px] md:mt-[165px] relative">
           <AirbnbLeafletMap
             listings={newListData || []}
             height="100%"

@@ -56,7 +56,7 @@ function Booked() {
 
   if (!bookingData) {
     return (
-      <div className="w-[100vw] min-h-[100vh] flex items-center justify-center bg-slate-100 flex-col gap-[20px]">
+      <div className="w-full min-h-[100vh] flex items-center justify-center bg-slate-100 flex-col gap-[20px]">
         <RxCross2
           className="w-[40px] h-[40px] bg-[red] text-white p-[8px] cursor-pointer absolute top-[5%] left-[20px] rounded-[50%] flex items-center justify-center"
           onClick={() => navigate("/")}
@@ -73,7 +73,7 @@ function Booked() {
   }
 
   return (
-    <div className="w-[100vw] min-h-[100vh] flex items-center justify-center gap-[25px] bg-slate-100 flex-col relative py-12 px-4">
+    <div className="w-full min-h-[100vh] flex items-center justify-center gap-[25px] bg-slate-100 flex-col relative py-12 px-4">
       <RxCross2
         className="w-[40px] h-[40px] bg-neutral-900 text-white p-[8px] cursor-pointer absolute top-[5%] left-[20px] rounded-[50%] flex items-center justify-center hover:scale-105 transition"
         onClick={() => navigate("/")}

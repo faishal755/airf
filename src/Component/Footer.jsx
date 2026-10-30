@@ -112,6 +112,7 @@ export default function Footer() {
               key={idx}
               onClick={() => handleDestinationClick(dest.query)}
               className="group cursor-pointer text-left"
+              
             >
               <p className="text-sm font-semibold text-gray-900 group-hover:underline">
                 {dest.name}
@@ -131,44 +132,19 @@ export default function Footer() {
           <h4 className="font-semibold text-gray-900 mb-4 text-base">Support & Safety</h4>
           <ul className="space-y-3 text-gray-600">
             <li>
-              <button
-                type="button"
-                onClick={() => window.dispatchEvent(new CustomEvent("open-airbnb-concierge"))}
-                className="hover:underline hover:text-gray-950 transition text-left cursor-pointer flex items-center gap-1.5"
-              >
-                <span>Help Centre & AI Concierge</span>
-                <span className="text-[10px] bg-rose-100 text-rose-600 font-bold px-1.5 py-0.5 rounded-full">New</span>
-              </button>
+              <span className="hover:underline hover:text-gray-950 transition cursor-pointer">
+                Help Centre
+              </span>
             </li>
             <li>
-              <button
-                type="button"
-                onClick={() =>
-                  window.dispatchEvent(
-                    new CustomEvent("open-airbnb-concierge", {
-                      detail: { query: "Tell me about AirCover safety and guest protection" },
-                    })
-                  )
-                }
-                className="hover:underline hover:text-gray-950 transition text-left cursor-pointer"
-              >
+              <span className="hover:underline hover:text-gray-950 transition cursor-pointer">
                 AirCover Protection
-              </button>
+              </span>
             </li>
             <li>
-              <button
-                type="button"
-                onClick={() =>
-                  window.dispatchEvent(
-                    new CustomEvent("open-airbnb-concierge", {
-                      detail: { query: "What are your guest safety guidelines and house rules?" },
-                    })
-                  )
-                }
-                className="hover:underline hover:text-gray-950 transition text-left cursor-pointer"
-              >
+              <span className="hover:underline hover:text-gray-950 transition cursor-pointer">
                 Safety Information
-              </button>
+              </span>
             </li>
             <li>
               <a href="#disabilities" className="hover:underline hover:text-gray-950 transition">
@@ -176,19 +152,9 @@ export default function Footer() {
               </a>
             </li>
             <li>
-              <button
-                type="button"
-                onClick={() =>
-                  window.dispatchEvent(
-                    new CustomEvent("open-airbnb-concierge", {
-                      detail: { query: "What is the cancellation and refund policy?" },
-                    })
-                  )
-                }
-                className="hover:underline hover:text-gray-950 transition text-left cursor-pointer"
-              >
+              <span className="hover:underline hover:text-gray-950 transition cursor-pointer">
                 Flexible cancellation options
-              </button>
+              </span>
             </li>
             <li>
               <a href="#concerns" className="hover:underline hover:text-gray-950 transition">

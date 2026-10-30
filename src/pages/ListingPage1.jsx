@@ -75,8 +75,19 @@ function ListingPage1() {
     <div className="min-h-screen bg-[#F7F7F7] flex flex-col">
       {/* Top Header */}
       <header className="sticky top-0 z-30 bg-white border-b border-gray-100 shadow-sm">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <img src={logo} alt="Airbnb" className="w-[100px] cursor-pointer" onClick={() => navigate("/")} />
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              type="button"
+              onClick={() => navigate("/")}
+              className="w-9 h-9 rounded-full bg-[red] hover:bg-[#d00] flex items-center justify-center text-white transition cursor-pointer shadow-sm active:scale-95"
+              title="Back to Home"
+              aria-label="Back to Home"
+            >
+              <FiArrowLeft size={18} />
+            </button>
+            <img src={logo} alt="Airbnb" className="w-[85px] sm:w-[100px] cursor-pointer" onClick={() => navigate("/")} />
+          </div>
           {/* Step Indicators */}
           <div className="flex items-center gap-2 md:gap-4">
             {STEPS.map((step, i) => (
@@ -195,19 +206,19 @@ function ListingPage1() {
             </div>
 
             {/* Footer CTA */}
-            <div className="flex items-center justify-between pt-2 pb-10">
+            <div className="flex items-center justify-between gap-4 pt-4 pb-12">
               <button
                 type="button"
                 onClick={() => navigate("/")}
-                className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-gray-900 transition cursor-pointer underline"
+                className="flex items-center gap-2 text-sm sm:text-base font-semibold text-gray-700 hover:text-black py-2.5 px-3 rounded-xl hover:bg-gray-100 transition cursor-pointer active:scale-95"
               >
-                <FiArrowLeft /> Back
+                <FiArrowLeft size={18} /> Back
               </button>
               <button
                 type="submit"
-                className="flex items-center gap-2.5 bg-[#FF385C] hover:bg-[#E31C5F] text-white font-bold text-base px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer active:scale-95"
+                className="flex items-center gap-2 bg-[#FF385C] hover:bg-[#E31C5F] text-white font-bold text-sm sm:text-base px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer active:scale-95"
               >
-                Next: Pick a Category <FiArrowRight />
+                <span>Next</span> <FiArrowRight size={18} />
               </button>
             </div>
           </form>

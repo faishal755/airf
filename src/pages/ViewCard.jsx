@@ -195,7 +195,7 @@ function ViewCard() {
     <div className="w-[100%] min-h-[100vh] bg-white flex items-center justify-start gap-[10px] flex-col overflow-auto relative pb-[60px]">
       {/* Back button */}
       <div
-        className="w-[50px] h-[50px] bg-[red] cursor-pointer absolute top-[5%] left-[20px] rounded-[50%] flex items-center justify-center z-10"
+        className="w-[50px] h-[50px] bg-[red] cursor-pointer fixed top-4 left-4 z-50 sm:absolute sm:top-[20px] sm:left-[20px] rounded-[50%] flex items-center justify-center"
         onClick={() => navigate("/")}
       >
         <FaLongArrowAltLeft className="w-[25px] h-[25px] text-[white]" />
@@ -212,11 +212,11 @@ function ViewCard() {
         <div className="w-[100%] h-[65%] md:w-[70%] md:h-[100%] overflow-hidden flex items-center justify-center border-[2px] border-[white]">
           <img src={cardDetails.image1} alt="" className="w-[100%] h-[100%] object-cover" />
         </div>
-        <div className="w-[100%] h-[30%] flex items-center justify-center md:w-[30%] md:h-[100%] md:flex-col">
-          <div className="w-[100%] h-[100%] overflow-hidden flex items-center justify-center border-[2px] border-[white]">
+        <div className="w-[100%] h-[35%] flex items-center justify-center md:w-[30%] md:h-[100%] md:flex-col">
+          <div className="w-[50%] h-[100%] md:w-[100%] md:h-[50%] overflow-hidden flex items-center justify-center border-[2px] border-[white]">
             <img src={cardDetails.image2} alt="" className="w-[100%] h-[100%] object-cover" />
           </div>
-          <div className="w-[100%] h-[100%] overflow-hidden flex items-center justify-center border-[2px] border-[white]">
+          <div className="w-[50%] h-[100%] md:w-[100%] md:h-[50%] overflow-hidden flex items-center justify-center border-[2px] border-[white]">
             <img src={cardDetails.image3} alt="" className="w-[100%] h-[100%] object-cover" />
           </div>
         </div>

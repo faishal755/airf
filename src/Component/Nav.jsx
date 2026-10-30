@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import logo from "../assets/logo.png";
-import { FiSearch } from "react-icons/fi";
+import { FiSearch, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { FaUserCircle, FaHome, FaCalendarAlt, FaSignOutAlt, FaSignInAlt, FaStar, FaRobot } from "react-icons/fa";
-import { MdWhatshot, MdVilla, MdBedroomParent, MdCabin, MdOutlineBed } from "react-icons/md";
+import { FaUserCircle, FaHome, FaCalendarAlt, FaSignOutAlt, FaSignInAlt, FaStar, FaQuestionCircle } from "react-icons/fa";
+import { MdWhatshot, MdVilla, MdBedroomParent, MdCabin, MdOutlineBed, MdOutlineSupportAgent } from "react-icons/md";
 import { GiGreenhouse } from "react-icons/gi";
 import { FaHouseFloodWater } from "react-icons/fa6";
 import { BsBuildingAdd, BsShopWindow } from "react-icons/bs";
-import { IoClose, IoSparkles } from "react-icons/io5";
+import { IoClose } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { authDataContext } from "../context/AuthContext";
 import axios from "axios";
@@ -32,11 +32,38 @@ function Nav() {
   const [input, setInput] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
   const popupRef = useRef(null);
+  const categoryScrollRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
   const navigate = useNavigate();
   const { serverUrl } = useContext(authDataContext);
   const { userData, setUserData } = useContext(userDataContext);
   const { listingData, setListingData, newListData, setNewListData, searchData, handleSearch, handleViewCard } =
     useContext(listingDataContext);
+
+  const checkCategoryScroll = () => {
+    const el = categoryScrollRef.current;
+    if (el) {
+      const { scrollLeft, scrollWidth, clientWidth } = el;
+      setCanScrollLeft(scrollLeft > 10);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
+  useEffect(() => {
+    checkCategoryScroll();
+    window.addEventListener("resize", checkCategoryScroll);
+    return () => window.removeEventListener("resize", checkCategoryScroll);
+  }, [listingData]);
+
+  const scrollCategories = (direction) => {
+    const el = categoryScrollRef.current;
+    if (el) {
+      const scrollAmount = direction === "left" ? -280 : 280;
+      el.scrollBy({ left: scrollAmount, behavior: "smooth" });
+      setTimeout(checkCategoryScroll, 320);
+    }
+  };
 
   // Close popup when clicking outside
   useEffect(() => {
@@ -147,14 +174,14 @@ function Nav() {
 
         {/* Right Controls */}
         <div className="flex items-center gap-2 flex-shrink-0">
-          {/* Ask AI Concierge button */}
+          {/* Assistant button */}
           <button
             onClick={() => window.dispatchEvent(new CustomEvent("open-airbnb-concierge"))}
             className="flex items-center gap-1.5 text-[13px] font-semibold text-gray-800 bg-rose-50 hover:bg-rose-100 border border-rose-200/90 rounded-full px-3.5 py-2 transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-2xs"
-            title="Ask Airbnb AI Concierge"
+            title="Search Assistant & FAQ"
           >
-            <IoSparkles className="text-[#FF385C] text-sm animate-spin-slow" />
-            <span className="text-[#FF385C] font-bold">Ask AI</span>
+            <MdOutlineSupportAgent className="text-[#FF385C] text-base" />
+            <span className="text-[#FF385C] font-bold">Assistant</span>
           </button>
 
           {/* List your home – text button */}
@@ -202,7 +229,7 @@ function Nav() {
                       <MenuItem icon={<FaHome />} label="My Listing" onClick={() => { navigate("/mylisting"); setShowPopup(false); }} />
                       <MenuItem icon={<FaCalendarAlt />} label="My Bookings" onClick={() => { navigate("/mybooking"); setShowPopup(false); }} />
                       <MenuItem icon={<FaStar />} label="Airbnb your home" onClick={() => { navigate("/listingpage1"); setShowPopup(false); }} />
-                      <MenuItem icon={<FaRobot />} label="Ask AI Concierge" onClick={() => { setShowPopup(false); window.dispatchEvent(new CustomEvent("open-airbnb-concierge")); }} />
+                      <MenuItem icon={<MdOutlineSupportAgent />} label="Search Assistant" onClick={() => { setShowPopup(false); window.dispatchEvent(new CustomEvent("open-airbnb-concierge")); }} />
                       <div className="my-1 h-px bg-gray-100 mx-3" />
                       <MenuItem icon={<FaSignOutAlt />} label="Log out" onClick={handleLogout} danger />
                     </div>
@@ -213,7 +240,7 @@ function Nav() {
                     <MenuItem label="Sign up" onClick={() => { navigate("/signup"); setShowPopup(false); }} />
                     <div className="my-1 h-px bg-gray-100 mx-3" />
                     <MenuItem label="Airbnb your home" onClick={() => { navigate("/listingpage1"); setShowPopup(false); }} />
-                    <MenuItem icon={<FaRobot />} label="AI Concierge & Help" onClick={() => { setShowPopup(false); window.dispatchEvent(new CustomEvent("open-airbnb-concierge")); }} />
+                    <MenuItem icon={<MdOutlineSupportAgent />} label="Search Assistant" onClick={() => { setShowPopup(false); window.dispatchEvent(new CustomEvent("open-airbnb-concierge")); }} />
                   </div>
                 )}
               </div>
@@ -261,32 +288,69 @@ function Nav() {
       </div>
 
       {/* ── Category Filter Bar ── */}
-      <div className="w-full bg-white overflow-x-auto pb-[10px]">
-        <div className="flex items-center gap-1 px-5 md:px-10 min-w-max mx-auto md:justify-center pt-1">
-          {CATEGORIES.map((cat) => {
-            const isActive =
-              activeCategory === cat.id ||
-              (cat.id === "trending" && !activeCategory) ||
-              (cat.id !== "trending" &&
-                (activeCategory || "").replace(/[\s_-]+/g, "") === cat.id.replace(/[\s_-]+/g, ""));
-            return (
-              <button
-                key={cat.id}
-                onClick={() => handleCategory(cat.id)}
-                className={`group flex flex-col items-center gap-1 px-4 py-3 cursor-pointer transition-all duration-150 relative flex-shrink-0 rounded-xl
-                  ${isActive ? "text-gray-900" : "text-gray-500 hover:text-gray-800 hover:bg-gray-50"}`}
-              >
-                <span className={`transition-transform duration-150 ${isActive ? "scale-110" : "group-hover:scale-105"}`}>
-                  {cat.icon}
-                </span>
-                <span className="text-[11px] font-semibold whitespace-nowrap">{cat.label}</span>
-                {isActive && (
-                  <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-gray-900 rounded-full" />
-                )}
-              </button>
-            );
-          })}
+      <div className="relative w-full bg-white border-b border-gray-100">
+        {/* Left Scroll Button & Fade Mask */}
+        {canScrollLeft && (
+          <div className="hidden sm:flex absolute left-0 top-0 bottom-0 z-20 items-center pl-2 pr-8 bg-gradient-to-r from-white via-white/95 to-transparent">
+            <button
+              onClick={() => scrollCategories("left")}
+              className="w-8 h-8 rounded-full border border-gray-300 bg-white hover:bg-gray-50 hover:scale-105 active:scale-95 shadow-md flex items-center justify-center text-gray-700 hover:text-black transition cursor-pointer"
+              aria-label="Scroll left"
+            >
+              <FiChevronLeft size={17} />
+            </button>
+          </div>
+        )}
+
+        {/* Categories Horizontal Scroller */}
+        <div
+          ref={categoryScrollRef}
+          onScroll={checkCategoryScroll}
+          className="w-full overflow-x-auto scroll-smooth scrollbar-none py-1.5"
+        >
+          <div className="flex items-center gap-1 sm:gap-2 px-5 sm:px-8 md:px-12 min-w-max mx-auto md:justify-center">
+            {CATEGORIES.map((cat) => {
+              const isActive =
+                activeCategory === cat.id ||
+                (cat.id === "trending" && !activeCategory) ||
+                (cat.id !== "trending" &&
+                  (activeCategory || "").replace(/[\s_-]+/g, "") === cat.id.replace(/[\s_-]+/g, ""));
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => handleCategory(cat.id)}
+                  className={`group flex flex-col items-center gap-1 px-3 sm:px-4 py-2 sm:py-2.5 cursor-pointer transition-all duration-150 relative flex-shrink-0 rounded-xl
+                    ${isActive ? "text-gray-900" : "text-gray-500 hover:text-gray-800 hover:bg-gray-50"}`}
+                >
+                  <span className={`transition-transform duration-150 ${isActive ? "scale-110 text-gray-900" : "group-hover:scale-105"}`}>
+                    {cat.icon}
+                  </span>
+                  <span className={`text-[12px] whitespace-nowrap ${isActive ? "font-bold text-gray-900" : "font-medium"}`}>
+                    {cat.label}
+                  </span>
+                  {isActive && (
+                    <span className="absolute bottom-0 left-2 right-2 h-[2px] bg-gray-900 rounded-full" />
+                  )}
+                </button>
+              );
+            })}
+            {/* Trailing spacer ensures generous end-padding so items after rooms/ending never hit the screen edge */}
+            <div className="w-10 sm:w-16 shrink-0 h-1 pointer-events-none" aria-hidden="true" />
+          </div>
         </div>
+
+        {/* Right Scroll Button & Fade Mask */}
+        {canScrollRight && (
+          <div className="hidden sm:flex absolute right-0 top-0 bottom-0 z-20 items-center pr-2 pl-8 bg-gradient-to-l from-white via-white/95 to-transparent">
+            <button
+              onClick={() => scrollCategories("right")}
+              className="w-8 h-8 rounded-full border border-gray-300 bg-white hover:bg-gray-50 hover:scale-105 active:scale-95 shadow-md flex items-center justify-center text-gray-700 hover:text-black transition cursor-pointer"
+              aria-label="Scroll right"
+            >
+              <FiChevronRight size={17} />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

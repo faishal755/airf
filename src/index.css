@@ -44,7 +44,7 @@ html, body {
   border: none !important;
 }
 
-/* Authentic Rich Airbnb Marker with Category, Address & Price */
+/* Map marker styles */
 .airbnb-rich-marker {
   position: relative;
   display: flex;

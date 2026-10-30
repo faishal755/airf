@@ -1,5 +1,4 @@
-// Rich Airbnb Dummy Listings Data
-// High-resolution architectural photography, realistic locations, categories & coordinates
+// Sample listings data
 
 export const dummyListings = [
   {

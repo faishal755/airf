@@ -82,8 +82,19 @@ function ListingPage2() {
     <div className="min-h-screen bg-[#F7F7F7] flex flex-col">
       {/* Header */}
       <header className="sticky top-0 z-30 bg-white border-b border-gray-100 shadow-sm">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <img src={logo} alt="Airbnb" className="w-[100px] cursor-pointer" onClick={() => navigate("/")} />
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              type="button"
+              onClick={() => navigate("/listingpage1")}
+              className="w-9 h-9 rounded-full bg-[red] hover:bg-[#d00] flex items-center justify-center text-white transition cursor-pointer shadow-sm active:scale-95"
+              title="Back to Step 1"
+              aria-label="Back to Step 1"
+            >
+              <FiArrowLeft size={18} />
+            </button>
+            <img src={logo} alt="Airbnb" className="w-[85px] sm:w-[100px] cursor-pointer" onClick={() => navigate("/")} />
+          </div>
           {/* Steps */}
           <div className="flex items-center gap-2 md:gap-4">
             {STEPS.map((step, i) => (
@@ -148,25 +159,25 @@ function ListingPage2() {
           </div>
 
           {/* Footer Nav */}
-          <div className="flex items-center justify-between pb-10">
+          <div className="flex items-center justify-between gap-4 pt-6 pb-12">
             <button
               type="button"
               onClick={() => navigate("/listingpage1")}
-              className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-gray-900 transition cursor-pointer underline"
+              className="flex items-center gap-2 text-sm sm:text-base font-semibold text-gray-700 hover:text-black py-2.5 px-3 rounded-xl hover:bg-gray-100 transition cursor-pointer active:scale-95"
             >
-              <FiArrowLeft /> Back
+              <FiArrowLeft size={18} /> Back
             </button>
             <button
               type="button"
               onClick={() => navigate("/listingpage3")}
               disabled={!category}
-              className={`flex items-center gap-2.5 font-bold text-base px-8 py-4 rounded-2xl shadow-lg transition-all duration-200 cursor-pointer active:scale-95
+              className={`flex items-center gap-2 font-bold text-sm sm:text-base px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl shadow-lg transition-all duration-200 cursor-pointer active:scale-95
                 ${category
                   ? "bg-[#FF385C] hover:bg-[#E31C5F] text-white hover:shadow-xl"
-                  : "bg-gray-100 text-gray-400 cursor-not-allowed shadow-none"
+                  : "bg-gray-200 text-gray-400 cursor-not-allowed shadow-none"
                 }`}
             >
-              Next: Review Listing <FiArrowRight />
+              <span>Next</span> <FiArrowRight size={18} />
             </button>
           </div>
         </div>
