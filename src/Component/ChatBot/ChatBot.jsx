@@ -36,7 +36,7 @@ const STORAGE_KEY = "airbnb_concierge_messages_v1";
 const INITIAL_GREETING = {
   id: "msg_welcome",
   sender: "bot",
-  text: `👋 **Welcome to your Airbnb Concierge!**
+  text: `👋 **Welcome to your Airbnb Travel Assistant!**
 
 I am **Aura**, your personalized travel assistant. Here's how I can assist you:
 - 🔍 **Search & Recommend Stays**: Find villas, cabins, pool houses, or budget stays tailored to your dates and budget.
@@ -283,8 +283,11 @@ function ChatBot() {
         const res = await axios.post(
           `${serverUrl}/api/bot/chat`,
           { message: query },
-          { timeout: 2000 }
+          { timeout: 6000 }
         );
+        if (res.data?.reply) {
+          explanation = res.data.reply;
+        }
         if (res.data?.listings && res.data.listings.length > 0) {
           const backendIds = new Set(res.data.listings.map((l) => String(l._id)));
           const filteredLocal = listings.filter((l) => !backendIds.has(String(l._id)));
@@ -729,7 +732,7 @@ Our Concierge & Guest Experience specialists have received your inquiry regardin
 
             <div className="text-center mt-1.5">
               <span className="text-[10px] text-gray-400">
-                Airbnb AI Concierge • Instant property search & 24/7 help
+                Airbnb Travel Assistant • Free Property Search & 24/7 Help
               </span>
             </div>
           </div>

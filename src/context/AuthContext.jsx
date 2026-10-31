@@ -6,7 +6,23 @@ export const authDataContext = createContext();
 // Automatically attach Bearer token and credentials to all axios requests
 axios.interceptors.request.use((config) => {
   try {
-    const token = localStorage.getItem("token");
+    let token = localStorage.getItem("token");
+    if (!token) {
+      // Fallback: check if token was saved inside the userData object
+      const savedUser = localStorage.getItem("userData");
+      if (savedUser) {
+        try {
+          const parsed = JSON.parse(savedUser);
+          token = parsed?.token;
+          if (token) {
+            localStorage.setItem("token", token);
+          }
+        } catch {
+          // ignore parse errors
+        }
+      }
+    }
+
     if (token) {
       config.headers = config.headers || {};
       config.headers.Authorization = `Bearer ${token}`;
@@ -20,7 +36,7 @@ axios.interceptors.request.use((config) => {
 
 function AuthContext({ children }) {
   // When running locally in Vite dev mode, use relative URL "" so requests go through 
-  // Vite's same-origin proxy to Render. This guarantees cookies are NEVER blocked by Chrome!
+  // Vite's proxy (to localhost:8000)
   const isDev =
     typeof window !== "undefined" &&
     (window.location.hostname === "localhost" ||

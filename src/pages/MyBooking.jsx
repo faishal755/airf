@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaLongArrowAltLeft, FaSuitcase, FaMapMarkerAlt, FaStar, FaCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { userDataContext } from "../context/UserContext";
@@ -8,9 +8,16 @@ import Footer from "../Component/Footer";
 
 function MyBooking() {
   const navigate = useNavigate();
-  const { userData } = useContext(userDataContext);
+  const { userData, getCurrentUser } = useContext(userDataContext);
   const { handleViewCard } = useContext(listingDataContext);
   const [filter, setFilter] = useState("all"); // "all" | "confirmed"
+
+  // Fetch updated active bookings whenever this page loads
+  useEffect(() => {
+    if (getCurrentUser) {
+      getCurrentUser();
+    }
+  }, []);
 
   const myBookings = Array.isArray(userData?.booking) ? userData.booking : [];
 
